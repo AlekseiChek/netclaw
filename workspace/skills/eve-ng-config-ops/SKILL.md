@@ -1,6 +1,6 @@
 ---
 name: eve-ng-config-ops
-description: Manage EVE-NG startup configs — read, write, wipe, and bulk-export node configurations.
+description: Manage EVE-NG startup configs — read, write, wipe, restore from backup into lab startup-configs, and bulk-export node configurations.
 user-invocable: true
 metadata:
   openclaw:
@@ -50,6 +50,16 @@ Use this skill for startup config handling stored in the lab file.
 "Load a startup config onto R2"                        → eve_stop_node → eve_set_node_config → eve_start_node
 "Clear only the startup config for R3"                 → eve_stop_node → eve_wipe_node_config → eve_start_node
 ```
+
+## Backup Restore Rule
+
+When restoring configs from a backup repository or archive into an EVE-NG lab, treat it as **startup-config replacement**, not a live device restore:
+
+1. Map backup file names to EVE node names/IDs.
+2. Stop only affected nodes if they are running.
+3. Replace stored startup config with `eve_set_node_config`.
+4. Verify stored config via `eve_get_node_config`, `eve_get_all_configs`, or summaries.
+5. Do **not** boot nodes, console in, commit/save, or verify running config unless the user explicitly asks for live verification.
 
 ## Provisioning Flow
 
